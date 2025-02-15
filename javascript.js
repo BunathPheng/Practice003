@@ -4,6 +4,7 @@ const tasks = [];
             const taskDueDate = document.getElementById("taskDueDate").value;
             const taskPriority = document.getElementById("taskPriority").value;
             const errorMsg = document.getElementById("error");
+            const form = document.getElementById("taskForm");
 
             if (!taskName || !taskDueDate || taskPriority === "Choose a priority") {
                 errorMsg.textContent = "All fields are required!";
@@ -11,10 +12,13 @@ const tasks = [];
             }
 
             const dueDate = new Date(taskDueDate);
-            if (dueDate <= new Date()) {
+             
+            if (dueDate < new Date()) {
                 errorMsg.textContent = "Due date cannot be in the past!";
                 return;
             }
+        
+              
             tasks.push({
                 name: taskName,
                 dueDate: dueDate.toLocaleDateString("en-US"),
@@ -23,13 +27,17 @@ const tasks = [];
             });
 
             errorMsg.textContent = "";
+            form.reset();
             renderTasks();
+            
         }
 
         function toggleStatus(index) {
             tasks[index].status = tasks[index].status === "Pending" ? "Completed" : "Pending";
             renderTasks();
         }
+
+    
 
         function getPriorityColor(priority) {
             return priority === "High" ? "text-red-500" : priority === "Medium" ? "text-yellow-500" : "text-green-500";
